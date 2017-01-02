@@ -65,7 +65,7 @@
     if (!key) {return console.warn(`${e.key.toLowerCase()} not assigned`)}
 
     const audio = audios.filter(filterCorrectKey.bind(this,e.key))[0];
-    if (!audio) { return console.warn('Audio missing for an assigned key')}
+    if (!audio) { return console.warn(`Audio missing for ${e.key.toLowerCase()}`)}
 
     playAudio(audio)
     triggerKeyAnimation(key)
