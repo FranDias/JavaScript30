@@ -61,21 +61,22 @@
   const keyboardKeys = [].slice.call(document.querySelectorAll('div[data-key]'));
 
   function triggerKeyActions(e) {
-    const key = keyboardKeys.filter(filterCorrectKey.bind(this,e.key))[0]
-    if (!key) {return console.warn(`${e.key.toLowerCase()} not assigned`)}
+    const key = keyboardKeys.filter(filterCorrectKey.bind(this,e.key))[0];
+    if (!key) {return console.warn(`${e.key.toLowerCase()} not assigned`);}
 
     const audio = audios.filter(filterCorrectKey.bind(this,e.key))[0];
     if (!audio) { return console.warn(`Audio missing for ${e.key.toLowerCase()}`)}
 
-    playAudio(audio)
-    triggerKeyAnimation(key)
+    playAudio(audio);
+    triggerKeyAnimation(key);
   }
 
   function filterCorrectKey(e, node) {
-    return node.dataset.key.toLowerCase() === e.toLowerCase()
+    return node.dataset.key.toLowerCase() === e.toLowerCase();
   }
 
   function triggerClickActions(e) {
+    console.time("click");
     if (!e.target.dataset.key && !e.target.parentNode.dataset.key) { return };
     let targetNode;
 
@@ -88,33 +89,37 @@
 
     audio = audios.filter(filterCorrectKey.bind(this, targetNode.dataset.key))[0];
 
-    triggerKeyAnimation(targetNode)
-    playAudio(audio)
+    playAudio(audio);
+    triggerKeyAnimation(targetNode);
+
   }
 
   function playAudio(node) {
     if (!node) { return };
     node.currentTime = 0;
-    node.play()
+    node.play();
   }
 
   function triggerKeyAnimation(node) {
-    node.classList.add('playing')
+    node.classList.add('playing');
     node.addEventListener('transitionend', endKeyAnimation);
   }
 
   function endKeyAnimation(e) {
-    e.target.classList.remove('playing')
-    e.target.removeEventListener('transistionend', endKeyAnimation)
+    e.target.classList.remove('playing');
+
+    e.target.removeEventListener('transitionend', endKeyAnimation);
+
+    console.timeEnd("click");
   }
 
   function setWindowListeners() {
-    window.addEventListener('keydown', triggerKeyActions)
-    window.addEventListener('click', triggerClickActions)
+    window.addEventListener('keydown', triggerKeyActions);
+    window.addEventListener('click', triggerClickActions);
   }
 
   function kickoff(){
-    setWindowListeners()
+    setWindowListeners();
   }
 
   kickoff()
