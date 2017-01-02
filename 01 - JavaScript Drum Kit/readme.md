@@ -1,23 +1,48 @@
 Some differences between wes's tutorial and my implementation:
 
-Speed:
-Granted these are microsecond optimizations mine is about x% faster. Wes's version also (somehow) seems to fire the end time twice. I'm only taking the slower of the two times:
+# Speed:
+Granted these are microsecond optimizations mine is about 43% faster. Wes's version actually triggers `console.timeEnd` twice. Once when the `playing` class is added & once when `playing` is removed. So, it's most accurate to just take the larger number.
+
+Keep in mind, Wes made his to teach new people how do this exercise & it's perfect for that. I just took his prompt and ran with it to see what I could do.
+
+CSS Transition set to .001ms, 9 key presses averaged.
 
 Mine:
+```
+24.319
+17.154
+3.674
+14.654
+19.370
+4.677
+9.842
+14.848
+2.860
+18.928
+```
+13.03ms average
 
 Wes:
+```
+41.329
+37.010
+24.789
+20.532
+43.381
+21.861
+26.026
+28.381
+33.912
+```
+30.787ms average
 
-
-Mouse:
+# Mouse:
 There's stuff on the screen that looks clickable. I want to click it. Now I can.
 
-Keyboard:
-In Wes's version if you hold a key it will eventually freeze and stay there. Mine always removes the class.
-
-Error handling:
+# Error handling:
 I imagined that when adding sounds you'd want to know what's working & what isn't. I added some utility to allow for that.
 
-css:
+# CSS:
 Although I still disagree with a bunch of the css that's in here
 - scale with `rem`
 - disabled select on "key"

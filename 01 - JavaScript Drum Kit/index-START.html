@@ -76,7 +76,6 @@
   }
 
   function triggerClickActions(e) {
-    console.time("click");
     if (!e.target.dataset.key && !e.target.parentNode.dataset.key) { return };
     let targetNode;
 
@@ -91,7 +90,6 @@
 
     playAudio(audio);
     triggerKeyAnimation(targetNode);
-
   }
 
   function playAudio(node) {
@@ -107,10 +105,7 @@
 
   function endKeyAnimation(e) {
     e.target.classList.remove('playing');
-
     e.target.removeEventListener('transitionend', endKeyAnimation);
-
-    console.timeEnd("click");
   }
 
   function setWindowListeners() {
