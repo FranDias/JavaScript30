@@ -61,8 +61,11 @@
   const keyboardKeys = [].slice.call(document.querySelectorAll('div[data-key]'));
 
   function triggerKeyActions(e) {
-    const audio = audios.filter(filterCorrectKey.bind(this,e.key))[0];
     const key = keyboardKeys.filter(filterCorrectKey.bind(this,e.key))[0]
+    if (!key) {return console.warn(`${e.key.toLowerCase()} not assigned`)}
+
+    const audio = audios.filter(filterCorrectKey.bind(this,e.key))[0];
+    if (!audio) { return console.warn('Audio missing for an assigned key')}
 
     playAudio(audio)
     triggerKeyAnimation(key)
