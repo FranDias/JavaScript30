@@ -56,20 +56,37 @@
   <audio data-key="l" src="sounds/tink.wav"></audio>
 
 <script>
-((undefined)=> {
+((undefined) => {
   const audios = [].slice.call(document.querySelectorAll('audio'));
-  const keys = [].slice.call(document.querySelectorAll('div[data-key]'));
+  const keyboardKeys = [].slice.call(document.querySelectorAll('div[data-key]'));
 
-  function triggerActions(e) {
-    audio = audios.filter(filterCorrectKey.bind(this,e))[0];
-    key = keys.filter(filterCorrectKey.bind(this,e))[0]
+  function triggerKeyActions(e) {
+    const audio = audios.filter(filterCorrectKey.bind(this,e.key))[0];
+    const key = keyboardKeys.filter(filterCorrectKey.bind(this,e.key))[0]
 
     playAudio(audio)
     triggerKeyAnimation(key)
   }
 
   function filterCorrectKey(e, node) {
-    return node.dataset.key.toLowerCase() === e.key.toLowerCase()
+    return node.dataset.key.toLowerCase() === e.toLowerCase()
+  }
+
+  function triggerClickActions(e) {
+    if (!e.target.dataset.key && !e.target.parentNode.dataset.key) { return };
+    let targetNode;
+
+    if (e.target.dataset.key) {
+      targetNode = e.target;
+    }
+    else if (e.target.parentNode.dataset.key) {
+      targetNode = e.target.parentNode;
+    };
+
+    audio = audios.filter(filterCorrectKey.bind(this, targetNode.dataset.key))[0];
+
+    triggerKeyAnimation(targetNode)
+    playAudio(audio)
   }
 
   function playAudio(node) {
@@ -88,8 +105,13 @@
     e.target.removeEventListener('transistionend', endKeyAnimation)
   }
 
+  function setWindowListeners() {
+    window.addEventListener('keydown', triggerKeyActions)
+    window.addEventListener('click', triggerClickActions)
+  }
+
   function kickoff(){
-    window.addEventListener('keydown', triggerActions)
+    setWindowListeners()
   }
 
   kickoff()
