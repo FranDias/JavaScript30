@@ -57,8 +57,8 @@
 
 <script>
 ((undefined) => {
-  const audios = [].slice.call(document.querySelectorAll('audio'));
-  const keyboardKeys = [].slice.call(document.querySelectorAll('div[data-key]'));
+  const audios = normalizedArrayOfNodes('audio');
+  const keyboardKeys = normalizedArrayOfNodes('div[data-key]');
 
   function triggerKeyActions(e) {
     const key = keyboardKeys.find(findCorrectKey.bind(this,e.key));
@@ -72,7 +72,24 @@
   }
 
   function findCorrectKey(e, node) {
-    return node.dataset.key.toLowerCase() === e.toLowerCase();
+    return node.dataset.key === e.toLowerCase();
+  }
+
+  function setLowerCaseKeys(node) {
+    node.dataset.key = node.dataset.key.toLowerCase()
+    return node
+  }
+
+  function normalizedArrayOfNodes(selector) {
+    return normalizeKeyBoardKeys(nodeListToArray(selector));
+  }
+
+  function normalizeKeyBoardKeys(array) {
+    return array.map(setLowerCaseKeys)
+  }
+
+  function nodeListToArray(selector) {
+    return [].slice.call(document.querySelectorAll(`${selector}`));
   }
 
   function triggerClickActions(e) {
