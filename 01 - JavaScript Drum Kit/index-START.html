@@ -61,17 +61,17 @@
   const keyboardKeys = [].slice.call(document.querySelectorAll('div[data-key]'));
 
   function triggerKeyActions(e) {
-    const key = keyboardKeys.filter(filterCorrectKey.bind(this,e.key))[0];
+    const key = keyboardKeys.find(findCorrectKey.bind(this,e.key));
     if (!key) {return console.warn(`${e.key.toLowerCase()} not assigned`);}
 
-    const audio = audios.filter(filterCorrectKey.bind(this,e.key))[0];
+    const audio = audios.find(findCorrectKey.bind(this,e.key));
     if (!audio) { return console.warn(`Audio missing for ${e.key.toLowerCase()}`)}
 
     playAudio(audio);
     triggerKeyAnimation(key);
   }
 
-  function filterCorrectKey(e, node) {
+  function findCorrectKey(e, node) {
     return node.dataset.key.toLowerCase() === e.toLowerCase();
   }
 
@@ -86,7 +86,7 @@
       targetNode = e.target.parentNode;
     };
 
-    audio = audios.filter(filterCorrectKey.bind(this, targetNode.dataset.key))[0];
+    audio = audios.find(findCorrectKey.bind(this, targetNode.dataset.key));
 
     playAudio(audio);
     triggerKeyAnimation(targetNode);
